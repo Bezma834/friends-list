@@ -23,6 +23,9 @@ import {
 import confetti from 'canvas-confetti';
 import { GET_FRIENDS, ADD_FRIEND, DELETE_FRIEND } from './queries';
 
+const EXPRESS_URL = import.meta.env.VITE_EXPRESS_URL || 'http://localhost:5000';
+const HASURA_URL = import.meta.env.VITE_HASURA_URL || 'http://localhost:8080';
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || 'null'));
@@ -74,7 +77,7 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8080/v1/graphql', {
+      const response = await fetch(`${HASURA_URL}/v1/graphql`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +114,7 @@ function App() {
     const endpoint = isLogin ? 'login' : 'signup';
 
     try {
-      const response = await fetch(`http://localhost:5000/auth/${endpoint}`, {
+      const response = await fetch(`${EXPRESS_URL}/auth/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -156,7 +159,7 @@ function App() {
     
     setAddLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/v1/graphql', {
+      const response = await fetch(`${HASURA_URL}/v1/graphql`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -209,7 +212,7 @@ function App() {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/v1/graphql', {
+      const response = await fetch(`${HASURA_URL}/v1/graphql`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
